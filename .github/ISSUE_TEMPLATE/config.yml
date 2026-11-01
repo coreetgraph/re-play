@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Formulaire de retour, sans compte GitHub (Feedback form, no GitHub account)
+    url: https://tally.so/r/WJ25qL
+    about: Le plus simple, en français ou en anglais. Quelques lignes suffisent.
+  - name: Discord (aide, bugs, idées / help, bugs, ideas)
+    url: https://discord.gg/BDAKUGz5jp
+    about: Pour discuter avec les autres testeurs. Les nouvelles versions y sont annoncées.

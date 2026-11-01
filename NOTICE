@@ -1,0 +1,26 @@
+re-play
+Copyright 2026 CORE et GRAPH
+
+Ce produit est distribué sous licence Apache 2.0 (voir le fichier LICENSE).
+
+re-play utilise des composants tiers, chacun sous sa propre licence : la liste, avec ce que chaque licence demande,
+est dans docs/LICENCES_TIERCES.md (dépôt du code source, et dossier docs/ du paquet). Les paquets construits (Windows, Mac, Linux)
+embarquent ces composants et leurs textes de licence ; ne retirez pas ces textes en redistribuant.
+
+Qt et PySide6 (The Qt Company) : licence LGPL v3. Les bibliothèques Qt sont des fichiers séparés dans le dossier du paquet
+(liaison dynamique) : vous pouvez les remplacer par une autre version de Qt. Texte de la licence : LICENSE-LGPL-3.0.txt à la
+racine du paquet quand il y est, sinon https://www.gnu.org/licenses/lgpl-3.0.txt. Code source : https://www.qt.io
+
+PyAV (code Python) : licence BSD-3. Il embarque ses propres bibliothèques FFmpeg (LGPL / GPL selon la construction du wheel,
+voir docs/LICENCES_TIERCES.md, point 1). Code source : https://github.com/PyAV-Org/PyAV
+
+gazu (client Kitsu) : licence LGPL v3 ; module Python importé, en clair dans le dossier du paquet, remplaçable.
+Code source : https://github.com/cgwire/gazu
+
+ffmpeg (programme séparé, appelé en ligne de commande) : licence LGPL v2.1 ou ultérieure, voir
+ffmpeg/LICENSE-ffmpeg-LGPL.txt et ffmpeg/LISEZMOI.txt dans le paquet. Code source : https://ffmpeg.org
+
+Pack de démonstration : les médias sont fabriqués par re-play (tools/creer_pack_demo.py), sans image tierce, sauf le film de
+démonstration « Cosmos Laundromat » (Blender Foundation, projet Gooseberry, https://gooseberry.blender.org), diffusé sous licence
+Creative Commons Attribution 3.0 (CC BY 3.0, https://creativecommons.org/licenses/by/3.0/) ; attribution demandée par le site
+officiel : « (CC) Blender Foundation | gooseberry.blender.org ». Le film est reproduit tel quel, non modifié hors découpage.

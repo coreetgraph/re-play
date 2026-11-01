@@ -1,0 +1,25 @@
+name: Une idée (demande de fonction)
+description: Une chose que re-play devrait faire, ou faire autrement.
+title: "[Idée] "
+labels: ["idée"]
+body:
+  - type: textarea
+    id: besoin
+    attributes:
+      label: Ce que tu essaies de faire
+      description: "Le besoin d'abord (ton travail, ton outil, ton blocage), pas la solution."
+    validations:
+      required: true
+  - type: textarea
+    id: idee
+    attributes:
+      label: Ce que tu imagines
+  - type: textarea
+    id: aujourdhui
+    attributes:
+      label: Comment tu fais aujourd'hui
+  - type: input
+    id: systeme
+    attributes:
+      label: Système et logiciels concernés
+      placeholder: "Windows 11, Nuke 15, Kitsu…"

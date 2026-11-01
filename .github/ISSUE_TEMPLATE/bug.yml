@@ -1,0 +1,53 @@
+name: Un problème (bug)
+description: Quelque chose ne marche pas, plante ou se comporte bizarrement.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci. Trois lignes suffisent. **Ne joins jamais un vrai plan confidentiel** (une capture du pack de démo ou d'un
+        média sans importance, oui). Le plus simple : dans re-play, **Aide > Envoyer un retour…** prépare ce texte pour toi.
+  - type: input
+    id: version
+    attributes:
+      label: Version de re-play
+      description: "Aide > À propos de re-play (ou `re-play --version`)."
+      placeholder: "re-play 0.9.19"
+    validations:
+      required: true
+  - type: input
+    id: systeme
+    attributes:
+      label: Système
+      placeholder: "Windows 11, macOS 15 (Apple Silicon), Ubuntu 24.04…"
+    validations:
+      required: true
+  - type: textarea
+    id: faisais
+    attributes:
+      label: Ce que tu faisais
+    validations:
+      required: true
+  - type: textarea
+    id: arrive
+    attributes:
+      label: Ce qui s'est passé
+      description: "Le message d'erreur exact, s'il y en a un."
+    validations:
+      required: true
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Ce que tu attendais
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Diagnostic
+      description: "Aide > Copier le diagnostic, puis colle ici. re-play masque les chemins, noms de session, adresses et jetons ; relis-le quand même."
+      render: text
+  - type: textarea
+    id: capture
+    attributes:
+      label: Capture d'écran
+      description: "Glisse-la ici si elle aide (sans vrai plan confidentiel)."

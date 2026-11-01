@@ -1,0 +1,21 @@
+name: Une question
+description: Tu ne sais pas comment faire quelque chose avec re-play.
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Ta question
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version de re-play
+      description: "Aide > À propos de re-play."
+  - type: input
+    id: systeme
+    attributes:
+      label: Système
+      placeholder: "Windows 11, macOS 15, Ubuntu 24.04…"
