@@ -65,6 +65,7 @@ keeps your settings. What changes between versions: [CHANGELOG.md](CHANGELOG.md)
 1. Drag a media file or a folder onto the window.
 2. Space: play; ← →: frame by frame; ↑ ↓: previous or next clip; V: clip versions; D: draw; Shift+R: review panel.
 3. The [tester guide](docs/TESTER_GUIDE.md) suggests five things to try with a demo pack.
+4. The whole process (ingest, checking, review, profiles, connecting an AI): [How re-play works](docs/HOW_IT_WORKS.md).
 
 ## Give feedback, report a problem
 

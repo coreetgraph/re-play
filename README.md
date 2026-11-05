@@ -68,6 +68,7 @@ par-dessus l'ancienne et garde les réglages. Ce qui change d'une version à l'a
 2. Espace : lecture ; ← → : image par image ; ↑ ↓ : clip précédent ou suivant ; V : versions du clip ; D : dessiner ;
    Maj+R : panneau de revue.
 3. Le [guide du testeur](docs/GUIDE_TESTEUR.md) propose cinq choses à essayer avec un pack de démonstration.
+4. Tout le parcours (ingest, vérification, revue, profils, brancher une IA) : [Comment marche re-play](docs/COMMENT_CA_MARCHE.md).
 
 ## Donner un avis, signaler un problème
 

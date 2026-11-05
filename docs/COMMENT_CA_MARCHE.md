@@ -1,5 +1,7 @@
 # Comment marche re-play
 
+*English version: [HOW_IT_WORKS.md](HOW_IT_WORKS.md).*
+
 re-play est le poste où l'on **regarde, vérifie, décide et fait circuler** les plans. Il ne fabrique pas d'images (Nuke,
 Blender, ComfyUI le font) et ne remplace pas un outil de suivi de production (Kitsu, ShotGrid). Il tourne sur l'ordinateur,
 sans compte, sans serveur, sans IA intégrée. Deux règles valent partout : **les médias d'origine ne sont jamais modifiés**, et
