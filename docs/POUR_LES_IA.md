@@ -89,8 +89,8 @@ ressource `replay://guide`.
 **Brancher** (l'utilisateur copie la commande depuis Préférences > IA · MCP) :
 
 ```
-claude mcp add re-play -- python <dossier re-play>/frontend_ui/mcp_serveur.py       (sources)
-claude mcp add re-play -- re-play --mcp                                              (installé)
+claude mcp add --scope user re-play -- python <dossier re-play>/frontend_ui/mcp_serveur.py       (sources)
+claude mcp add --scope user re-play -- re-play --mcp                                              (installé)
 ```
 
 Autre client : `{"mcpServers": {"re-play": {"command": "python", "args": ["…/frontend_ui/mcp_serveur.py"]}}}`.
@@ -194,6 +194,10 @@ lire_consignes(demande="D-PAC_0040-01")         -> {"statut": "envoyee", "dernie
 prendre_en_charge(…) ; deposer_proposition(… v004 …) ; attendre(…) -> {"type": "decision", "decision": "validee"}
 ```
 
+### Démarrer sans qu'on te le demande (IDE-169)
+
+Si l'utilisateur a coché Préférences > IA · MCP > « Démarrage automatique » et installé le veilleur, une tâche planifiée de son poste lance `re-play --veilleur` toutes les 2 minutes : chaque demande « envoyée » est confiée une fois à l'IA choisie, une seule à la fois (la suivante attend ta proposition) (`claude -p`, `codex exec`, `gemini -p` ou sa commande), avec une consigne qui donne l'id de la demande. Tu démarres donc sans conversation : lis la demande (`lire_consignes`), prends-la, fabrique, dépose ta proposition, puis arrête-toi. Mêmes règles qu'au § 2 : rien ne part, pas de verdict. Une consigne de l'utilisateur te relancera.
+
 ### Où lire le contexte (INT-18)
 
 Avant tout travail : `lire_consignes()` sans argument (studio), puis `lire_consignes(projet="…")`, et `plan="…"` si le travail
@@ -242,6 +246,10 @@ Une ligne JSON par geste de l'utilisateur, ajoutée à la fin (**à lire, jamais
   (version comparée), `plan_media`, `projet_media`.
 - `fin` = l'utilisateur a terminé : c'est le moment de lire, pas avant d'avoir une consigne claire.
 - **Revue annulée** (REV-27) : l'utilisateur peut abandonner une revue active (rien n'est publié). Le `.json` porte alors `"annulee": {"date", "par", "brouillon": true}` et `retours.jsonl` reçoit une ligne `fin` avec `"annulee": true` (`detail` « revue annulée ») : **ce n'est pas un verdict à exploiter**. `lire_notes(revue)` rend `annulee: true` et aucun verdict ; `lire_notes(projet, plan)` et `fiche_plan` écartent les notes d'une revue annulée de `verdicts` et listent ses identifiants dans `revues_annulees`. Si l'utilisateur la rouvre (Ouvrir une revue…, Ctrl+Z), la marque et la ligne `fin` annulée disparaissent. Une revue supprimée n'existe plus : ne la cherche pas, et ne recrée pas ses demandes.
+
+### Boîte du projet — `<projet>/.re-play/boite/reprises.jsonl` (IDE-169)
+
+Une ligne par reprise publiée, pour la personne qui a le plan : `{v, id, date, plan, version, chemin, note, pour_id, pour_nom, de, revue}`. Écrite par re-play au clic « Publier », lue par le re-play de cette personne (Arrivées). Lecture seule pour une IA : n'y écris pas.
 
 ### Playlist — `.repl`
 
