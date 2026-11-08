@@ -52,7 +52,7 @@ On the [Releases](https://github.com/coreetgraph/re-play/releases/latest) page, 
 |---|---|---|
 | Windows 10 / 11, 64-bit | `re-play_<version>_Windows_<date>.exe` | Run the installer (no admin rights needed). |
 | Mac with Apple silicon (M1 and later), macOS 14 and later | `re-play_<version>_Mac_<date>.dmg` | Drag `re-play` into Applications. See [docs/MAC.md](docs/MAC.md) (in French). |
-| Linux 64-bit, Ubuntu 26.04 and later | `re-play-<version>-x86_64.AppImage` | Make the file executable, then open it. See [docs/LINUX.md](docs/LINUX.md) (in French). |
+| Linux 64-bit, Ubuntu 24.04 and later | `re-play_<version>_amd64.deb` | In a terminal: `sudo apt install ./re-play_<version>_amd64.deb`, then start re-play from your applications. See [docs/LINUX.md](docs/LINUX.md) (in French). |
 
 The program is not signed yet: on first launch, Windows may show "Windows protected your PC" (*More info* > *Run anyway*), and
 on Mac you allow it in *System Settings > Privacy & Security* > *Open Anyway*.

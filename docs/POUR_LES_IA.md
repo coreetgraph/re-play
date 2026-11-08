@@ -18,7 +18,7 @@ fonction qui change ce qu'une IA peut voir ou faire (CON-09). Le serveur MCP est
    tu n'envoies pas, et tu ne demandes pas à re-play d'envoyer.
 2. **Tu ne donnes jamais le verdict final.** Valider, « à reprendre », changer un statut chez la prod : c'est lui.
    Tu peux écrire une note ou un message, signé comme tel.
-3. **Une demande envoyée pendant qu'une session est ouverte ne la remplace jamais.** Elle va dans les **Arrivées**
+3. **Une demande envoyée pendant qu'une session est ouverte ne la remplace jamais.** Elle va dans la **Boîte de réception**
    (pastille + petite carte discrète) ; l'utilisateur choisit : nouvel onglet, à la suite, plus tard, retirer. Même avec
    `--ajouter`. Ne renvoie pas « pour insister » : une seule demande suffit.
 4. **re-play vide (ou fermé) = ouverture directe.** Fermé, le premier lancement l'ouvre sur ta demande.
@@ -76,7 +76,7 @@ re-play.exe --revue "E:/PROJETS/DEMO/03_Production/Shots/DEM/DEM_0010/_revue/261
 
 `lancement.envoyer(demande)` parle à la fenêtre ouverte (socket local réservé à l'utilisateur, réponse `ok`).
 Une demande = `{"chemins": [], "revue": "", "ajouter": false, "fps": null, "colorspace": "", "origine": "…"}`.
-Mettre dans `origine` ton nom (ex. « Claude — plan DEM_0010 ») : c'est ce que l'utilisateur lira dans les Arrivées.
+Mettre dans `origine` ton nom (ex. « Claude — plan DEM_0010 ») : c'est ce que l'utilisateur lira dans la Boîte de réception.
 
 ## 4. Le serveur MCP (palier 1 : « l'IA voit et montre »)
 
@@ -99,7 +99,7 @@ Autre client : `{"mcpServers": {"re-play": {"command": "python", "args": ["…/f
 
 | Outil | Rend |
 |---|---|
-| `etat` | ouvert ou non, projet, onglets, clips de la session (chemin, plan, version), image affichée, comparaison A/B, Arrivées, **tes droits** |
+| `etat` | ouvert ou non, projet, onglets, clips de la session (chemin, plan, version), image affichée, comparaison A/B, Boîte de réception, **tes droits** |
 | `lister_projets` | projets du profil de studio |
 | `lister_plans(projet)` | plans et statut (`todo`, `wip`, `wfa`, `retake`, `done`…) |
 | `lister_versions(projet, plan, identifiant?)` | versions par identifiant, médias, **`prochaine_version`** et dossier où la ranger ; `v0: true` = le **V000** (plan sans effet au format de livraison du projet, lecture seule : tu le lis, tu ne l'écris jamais ; tu écris en `v001` et plus) |
@@ -107,7 +107,7 @@ Autre client : `{"mcpServers": {"re-play": {"command": "python", "args": ["…/f
 | `lire_envois(projet, plan?)` | ce qui est parti : version interne, destinataire, canal, numéro client, date, empreinte ; l'état du plan (« v012 envoyée · v014 plus récente non envoyée ») ; les retours du client, rattachés à la version envoyée. Le document de suivi du client prime sur le registre local. Lecture seule |
 | `lire_suivi_client(projet, plan?)` | ce que dit le **document de suivi du client** (tableur de la prod cliente, lu par re-play, « lu à 14 h 32 ») : version client, statut, date, commentaire, lien, version interne correspondante, et les **conflits** avec le registre des envois. Le document fait foi ; rien n'est corrigé ni écrit chez le client. Lecture seule |
 | `lire_notes(revue)` ou `lire_notes(projet, plan)` | notes et verdicts (retours.jsonl), dernier verdict par version, `fin` |
-| `lire_arrivees` | ce qui attend dans les Arrivées de l'utilisateur |
+| `lire_arrivees` | ce qui attend dans la Boîte de réception de l'utilisateur |
 | `decrire_media(chemin)` | résolution, durée, cadence, timecode, espace couleur du fichier et celui que re-play applique |
 | `lire_profil` | arborescence, nommage, statuts du studio |
 | `lire_correspondance(projet?)` | la grille « Correspondance » de l'utilisateur (CON-13) : ses statuts, tags et flags face à ceux de Kitsu, ShotGrid, Resolve, Hiero, Premiere ; sens de chaque lien, ∅ = rien ne change chez l'outil ; source de vérité du projet. **Lecture seule** : la grille se règle à la main (Préférences > Correspondance). |
@@ -118,14 +118,14 @@ Autre client : `{"mcpServers": {"re-play": {"command": "python", "args": ["…/f
 
 | Outil | Fait |
 |---|---|
-| `envoyer_a_replay(chemins? / revue? / projet+plan+identifiant?, ajouter?)` | une playlist, une revue ou un plan. **Session ouverte : dans les Arrivées, jamais à la place** (même avec `ajouter`) ; re-play vide : ouverture directe ; fermé : il s'ouvre dessus. La même demande déjà en attente n'est pas redéposée. |
-| `proposer_version(chemin, note)` | un média rangé comme nouvelle version : **toujours** dans les Arrivées, signé, avec ta note (300 caractères). |
+| `envoyer_a_replay(chemins? / revue? / projet+plan+identifiant?, ajouter?)` | une playlist, une revue ou un plan. **Session ouverte : dans la Boîte de réception, jamais à la place** (même avec `ajouter`) ; re-play vide : ouverture directe ; fermé : il s'ouvre dessus. La même demande déjà en attente n'est pas redéposée. |
+| `proposer_version(chemin, note)` | un média rangé comme nouvelle version : **toujours** dans la Boîte de réception, signé, avec ta note (300 caractères). |
 
 Exemples d'appels : `etat()` ; `lister_versions(projet="DEMO", plan="DEM_0010")` ; puis, ton fichier rangé dans le dossier
 `ranger_dans` rendu : `proposer_version(chemin="E:/PROJETS/DEMO/…/Still/v003/rgb/DEM_0010_still_v003.png", note="fond plus sombre")` ;
 `envoyer_a_replay(chemins=["…/a.mov", "…/b.mov"])`. Réponse = « reçu » : `{"recu": true, "destination": "arrivees", "id": "a-3"}`.
 
-**Ce qui arrive dans re-play** : une pastille « Arrivées » (et une petite carte discrète, pas pendant la lecture) ; le titre
+**Ce qui arrive dans re-play** : une pastille « Boîte de réception » (et une petite carte discrète, pas pendant la lecture) ; le titre
 (« Des médias DEMO », « Proposition DEM_0010 »), ta signature « IA · client · modèle » et ta note. L'utilisateur choisit :
 ouvrir dans un **nouvel onglet**, ajouter à la suite, plus tard, retirer. Sa session en cours ne bouge jamais.
 
@@ -133,8 +133,7 @@ ouvrir dans un **nouvel onglet**, ajouter à la suite, plus tard, retirer. Sa se
 
 - **Écriture = « MCP activé »** dans les préférences (désactivé par défaut : tu ne fais que lire) ; **« Lecture seule »** la
   coupe. Un refus est explicite ; ne contourne pas (la fenêtre refuse aussi).
-- **Chemins** : seulement dans les projets du profil de studio, les dossiers de projets des préférences et le dossier des
-  préférences ; sinon refus. Un chemin relatif, `..` ou un lien qui en sort est refusé. Seuls les médias sont décrits.
+- **Chemins** : seulement dans les projets du profil de studio, les dossiers de projets choisis dans les préférences et les dossiers ajoutés à « mcp.racines » ; sinon refus. Un chemin relatif, `..` ou un lien qui en sort est refusé. Seuls les médias sont décrits.
 - **Débit** : 120 lectures et 6 écritures par minute ; au-delà, refus : une seule demande suffit.
 - **Signature et journal** : chaque appel est signé « IA · <client> · <modèle> » (ajoute `modele="…"` aux écritures) et noté dans
   `<dossier des préférences>/mcp/journal.jsonl` (outil, auteur, paramètres, résultat, refus).
@@ -163,7 +162,7 @@ tout moment (par lui). Une consigne la fait repasser `envoyee` : reprends-la.
 | `prendre_en_charge(demande, modele?)` | statut `prise` ; une seule IA à la fois |
 | `signaler_avancement(demande, message, pourcentage?)` | visible dans re-play ; 12 par minute, hors des 6 écritures par minute |
 | `demander_accord(demande, objet, details?, cout?)` | bloque la demande jusqu'à sa réponse (OK / Non dans re-play) |
-| `deposer_proposition(demande, chemin, note, outil, modele, duree, cout, incertitudes, identifiant?)` | **range** le média en nouvelle version selon le profil (dossier `ranger_dans`, `prochaine_version` ; séquence `####` comprise ; jamais d'écrasement ; s'il est déjà dans une version neuve du plan, il y reste), crée la proposition et sa fiche (`<version>/.re-play/fiche.json`), la met dans ses Arrivées, prête en A/B avec la version de départ |
+| `deposer_proposition(demande, chemin, note, outil, modele, duree, cout, incertitudes, identifiant?)` | **range** le média en nouvelle version selon le profil (dossier `ranger_dans`, `prochaine_version` ; séquence `####` comprise ; jamais d'écrasement ; s'il est déjà dans une version neuve du plan, il y reste), crée la proposition et sa fiche (`<version>/.re-play/fiche.json`), la met dans sa Boîte de réception, prête en A/B avec la version de départ |
 
 **Règles** (préférences, Préférences > IA · MCP) :
 - **Accord d'abord** pour envoyer ses images à un service en ligne (`objet="Comfy Cloud"`), à chaque fois ; et pour
@@ -249,14 +248,14 @@ Une ligne JSON par geste de l'utilisateur, ajoutée à la fin (**à lire, jamais
 
 ### Boîte du projet — `<projet>/.re-play/boite/reprises.jsonl` (IDE-169)
 
-Une ligne par reprise publiée, pour la personne qui a le plan : `{v, id, date, plan, version, chemin, note, pour_id, pour_nom, de, revue}`. Écrite par re-play au clic « Publier », lue par le re-play de cette personne (Arrivées). Lecture seule pour une IA : n'y écris pas.
+Une ligne par reprise publiée, pour la personne qui a le plan : `{v, id, date, plan, version, chemin, note, pour_id, pour_nom, de, revue}`. Écrite par re-play au clic « Publier », lue par le re-play de cette personne (Boîte de réception). Lecture seule pour une IA : n'y écris pas.
 
 ### Playlist — `.repl`
 
 JSON : `{"format": "re-play", "version": 3, "type": "session" | "bout-a-bout" | "sequencier", "nom": "…", "clips": [{"path": "…"}]}`.
 Le plus simple pour proposer une suite de plans : un `bout-a-bout` (juste `clips[].path`, dans l'ordre). Rangement par le
 profil CEG : `<projet>/02_Montage/re-play/<AAAA-MM-JJ>/<HHMM>_<nom>.repl`. Un `.repl` envoyé pendant une session passe par
-les Arrivées (règle 3), comme le reste.
+la Boîte de réception (règle 3), comme le reste.
 
 ## 6. Où ranger une version, nommage, statuts (profil de studio)
 
@@ -284,4 +283,4 @@ Tout ce qui est propre à un studio est dans un **profil** (`frontend_ui/profils
 1. Les chemins existent, sont absolus, et la version est la **suivante** du plan.
 2. Un seul envoi (pas de doublon) ; `origine` renseignée.
 3. Rien d'autre à faire côté utilisateur que regarder : pas d'envoi, pas de verdict à ta place.
-4. Si re-play est ouvert avec une session, dis à l'utilisateur que ta demande est dans ses **Arrivées**.
+4. Si re-play est ouvert avec une session, dis à l'utilisateur que ta demande est dans sa **Boîte de réception**.
