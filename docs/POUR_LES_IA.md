@@ -50,6 +50,11 @@ python frontend_ui/main.py  <fichiers…>          (sources)
 | `--playlist-pipe [PROJET]` | ouvre la playlist du pipeline |
 | `--fps 24` / `--colorspace sRGB` | cadence (23.976 accepté) / espace de la source (sRGB, rec709, linear, log…) |
 | `--nouvelle-fenetre` | **ne parle pas** à la fenêtre ouverte : en ouvre une autre (à éviter, sauf demande de l'utilisateur) |
+| `--comparer MODE` | les deux premiers médias en A / B (`volet_h`, `volet_v`, `cote`, `difference`, `empiler`) |
+
+Commande `replay` (IDE-171, `docs/LIGNE_DE_COMMANDE.md`) : `replay open|compare|review|deliver|list <projet> [séquence] [plan] [tâche]
+[version]`. Mêmes règles : session ouverte = Arrivées ; refusée si « MCP activé » est coupé (sauf `list` et `deliver --dry`) ;
+`deliver` prépare seulement.
 
 Exemples :
 
@@ -242,7 +247,8 @@ Une ligne JSON par geste de l'utilisateur, ajoutée à la fin (**à lire, jamais
 - `verdict` : `note`, `valide`, `reprendre`, `retenue`, `autre` (statut maison, avec `statut_outil` / `statut_nom`),
   `statut` (statut du plan changé) ou `fin` (revue terminée). **Le dernier verdict d'une version fait foi.**
 - Champs possibles : `frame` (image dans le média), `capture` (PNG, dessin compris), `traits` (dessin), `compare_b`
-  (version comparée), `plan_media`, `projet_media`.
+  (version comparée), `plan_media`, `projet_media`, `origine` (`"vocale"` : note dictée, transcrite par le plug-in
+  « Notes vocales » ; c'est une note de l'utilisateur comme une autre, qu'il a pu corriger).
 - `fin` = l'utilisateur a terminé : c'est le moment de lire, pas avant d'avoir une consigne claire.
 - **Revue annulée** (REV-27) : l'utilisateur peut abandonner une revue active (rien n'est publié). Le `.json` porte alors `"annulee": {"date", "par", "brouillon": true}` et `retours.jsonl` reçoit une ligne `fin` avec `"annulee": true` (`detail` « revue annulée ») : **ce n'est pas un verdict à exploiter**. `lire_notes(revue)` rend `annulee: true` et aucun verdict ; `lire_notes(projet, plan)` et `fiche_plan` écartent les notes d'une revue annulée de `verdicts` et listent ses identifiants dans `revues_annulees`. Si l'utilisateur la rouvre (Ouvrir une revue…, Ctrl+Z), la marque et la ligne `fin` annulée disparaissent. Une revue supprimée n'existe plus : ne la cherche pas, et ne recrée pas ses demandes.
 
